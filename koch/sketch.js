@@ -11,11 +11,11 @@ function ponto(A) {
     circle(A.x,A.y,10);
 }
 
-function combina(A,B,t) {
+function combina(A,B,t) { //retorna combinação linear dos 3 parâmetros
     return createVector((1-t)*A.x+t*B.x,(1-t)*A.y+t*B.y);
 }
 
-function roda(O,P,ang)
+function roda(O,P,ang) //rotate na mão
 {
     let x = ((P.x-O.x)*cos(ang)+(P.y-O.y)*sin(ang))+O.x;
     let y = (-(P.x-O.x)*sin(ang)+(P.y-O.y)*cos(ang))+O.y;

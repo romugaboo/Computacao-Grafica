@@ -16,7 +16,8 @@ function ponto(A) {
 }
 
 function combina(A,B,t) {
-    return {x:(1-t)*A.x+t*B.x,y:(1-t)*A.y+t*B.y};
+    return {x:(1-t)*A.x+t*B.x,
+            y:(1-t)*A.y+t*B.y};
 }
 
 function draw() {
