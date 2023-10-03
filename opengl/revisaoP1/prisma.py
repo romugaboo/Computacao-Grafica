@@ -32,7 +32,6 @@ void main(void) {
 }
 """
 
-
 def compilaShaders():
     error = None
     progId = GL.glCreateProgram()
@@ -60,29 +59,28 @@ def compilaShaders():
     GL.glDeleteProgram(progId)
     raise Exception(error)
 
-
-def cubo():
-
-    posicao = array('f', [
-        -1.0, -1.0,  1.0,  # A 0
-        1.0, -1.0,  1.0,  # B 1
-        1.0, -1.0, -1.0,  # C 2
-        -1.0, -1.0, -1.0,  # D 3
-        0, 1, 0  # E (topo da pirâmide) 4
+def prisma():
+    posicao = array('f',[
+         0, 1.0, 2.0, # A 0
+         0, 0, 2.0, # B 1
+         0.5, 0, 2.0, # C 2
+         0, 1.0, 0, # D 3
+         0, 0, 0, # E 4
+         0.5, 0, 0 # F 5
     ])
-
+    indices = array('H',[
+        0, 1, 3, 3, 4, 1, #face 1
+        1, 2, 4, 4, 1, 2, #face 2
+        0, 2, 3, 3, 5, 2, #face 3
+        0, 1, 2, 3, 4, 5  #bases 1 e 2
+    ])
+    
     cor = array('f', [
         1.0, 0.0, 0.0,  # A
         1.0, 1.0, 0.0,  # B
         0.0, 1.0, 0.0,  # C
         0.0, 1.0, 1.0,  # D
         0.0, 0.0, 1.0,  # E
-    ])
-
-    indices = array('H', [
-        0, 4, 1, 1, 4, 2,
-        2, 4, 3, 3, 4, 0,
-        0, 3, 2, 0, 2, 1  # Base
     ])
 
     VAO = GL.glGenVertexArrays(1)
@@ -113,15 +111,13 @@ def cubo():
 
 
 def inicializa():
-    global progId, cuboVAO
+    global progId, prismaVAO
     GL.glEnable(GL.GL_DEPTH_TEST)
     GL.glEnable(GL.GL_MULTISAMPLE)
     progId = compilaShaders()
-    cuboVAO = cubo()
-
+    prismaVAO = prisma()
 
 a = 0
-
 
 def desenha():
     global a
@@ -134,7 +130,7 @@ def desenha():
     model = glm.rotate(a, glm.vec3(0, 1, 0))
     mvp = projection * camera * model
 
-    GL.glBindVertexArray(cuboVAO)
+    GL.glBindVertexArray(prismaVAO)
     GL.glUseProgram(progId)
     GL.glUniformMatrix4fv(GL.glGetUniformLocation(
         progId, "mvp"), 1, GL.GL_FALSE, glm.value_ptr(mvp))
@@ -142,7 +138,6 @@ def desenha():
                       GL.GL_UNSIGNED_SHORT, ctypes.c_void_p(0))
 
     a += 0.0002
-
 
 def main():
     if not glfw.init():
@@ -152,7 +147,7 @@ def main():
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
     glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, GL.GL_TRUE)
     glfw.window_hint(glfw.SAMPLES, 4)
-    window = glfw.create_window(800, 600, "Cubo", None, None)
+    window = glfw.create_window(800, 600, "Prisma", None, None)
     if not window:
         glfw.terminate()
         return
@@ -164,7 +159,6 @@ def main():
         glfw.poll_events()
 
     glfw.terminate()
-
 
 if __name__ == "__main__":
     main()

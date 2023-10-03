@@ -1,8 +1,6 @@
-
 function setup() {
     createCanvas(800,600);
 }  
-
 function draw() {
     translate(width/2,height/2);
     rotate(-HALF_PI);
@@ -17,4 +15,3 @@ function draw() {
     fill('#0000FF');
     arc(0,0,200,200,inicio,b*ang+inicio,PIE);
 }
-
